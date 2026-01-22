@@ -1,17 +1,14 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from agent import DeepResearchAgent
 
 app = FastAPI()
+agent = DeepResearchAgent("Autonomous Deep Research Engine")
 
-class Goal(BaseModel):
+class ResearchGoal(BaseModel):
     goal: str
 
-@app.get("/")
-def root():
-    return {"message": "Backend running"}
-
-@app.post("/run")
-def run_agent(data: Goal):
-    return {"goal": data.goal, "status": "Cognitive engine started"}
-
+@app.post("/research/run")
+def run_research(goal_data: ResearchGoal):
+    return agent.run(goal_data.goal)
 
